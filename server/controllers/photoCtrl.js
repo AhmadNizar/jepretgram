@@ -4,14 +4,15 @@ const Photo = require("../models/photosModel")
 class PhotosCtrl {
   
 	static createPhoto (req, res) {
+		console.log('masuk sini')
 		jwt.verify(req.headers.token, "shhhhh", function(err, decoded) {
 			if (!decoded.isLogin) {
 				res.status(403).send("invalid")
 			} else {
 				Photo.create({
 					title: req.body.title,
-					imgurl: "ini link photo",
-					user_id: decoded.user_id,
+					imgurl: "https://1.bp.blogspot.com/-UKn31I6IJWk/WIAqF1fZMXI/AAAAAAAABuw/xSOlFR2wra0d_PZ86Gq9WqH0swFpedDogCLcB/s1600/dp%2Bbbm%2Blucu%2Bbergerak%2B2015.gif",
+					user_id: decoded._id,
 					voter_id: [],
 					createdAt: new Date(),
 					updatedAt: new Date()
@@ -29,6 +30,7 @@ class PhotosCtrl {
 	}
 
 	static updatePhotoById (req, res) {
+		console.log(req.headers)
 		jwt.verify(req.headers.token, "shhhhh", function(err, decoded) {
 			if (!decoded.isLogin) {
 				res.status(403).send("invalid")
