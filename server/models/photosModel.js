@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const Schema   = mongoose.Schema
 
 const photosSchema = mongoose.Schema({
 	title: String,
@@ -15,6 +16,6 @@ const photosSchema = mongoose.Schema({
 	updatedAt: Date  
 })
 
-var User = mongoose.model("User", photosSchema)
+var User = mongoose.model("Photo", photosSchema)
 
 module.exports = User

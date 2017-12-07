@@ -1,9 +1,10 @@
 const app        = require("express")()
 const bodyParser = require("body-parser")
 const mongoose   = require("mongoose")
-const User       = require("./routes/usersRoute")
 const logger     = require("morgan")
 const cors       = require("cors")
+const User       = require("./routes/usersRoute")
+const Photo			 = require("./routes/photoRoute")
 
 app.use(logger("dev"))
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,6 +16,7 @@ mongoose.connect("mongodb://localhost/ahmadnizar", (err) => {
 })
 
 app.use("/users", User)
+app.use("/photos", Photo)
 
 app.listen(3000, () => {
 	console.log("jalan di 3000 tong")
