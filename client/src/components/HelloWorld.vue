@@ -93,15 +93,15 @@ export default {
       if (this.dataLogin.email === '' || this.dataLogin.password === '') {
         alert('Please fill all input')
       } else {
-        this.$http.post('/api/users/loginuser', {
+        this.$http.post('/users/login', {
           email: this.dataLogin.email,
           password: this.dataLogin.password
         })
-        .then(({data}) => { 
+        .then(({data}) => {
           if (data === 'invalid') {
             alert('Invalid Username or Password')
           } else {
-            localStorage.setItem('tokenOverflow', data)
+            localStorage.setItem('tokenJepret', data)
             this.$router.push({name: 'Index'})
           }
         })
@@ -112,15 +112,16 @@ export default {
       FB.login((response) => {
         if (response.authResponse) {
           localStorage.setItem('fbaccesstoken', response.authResponse.accessToken)
-          this.$http.post('/api/users/loginfb', {
-            userID: response.authResponse.userID
+          this.$http.post('/users/loginfb', {
+            user_id: response.authResponse.userID
           }, {
             headers: {
               accesstoken: response.authResponse.accessToken
             }
           })
           .then(({data}) => {
-            localStorage.setItem('tokenOverflow', data)
+            console.log(data)
+            localStorage.setItem('tokenJepret', data)
             this.$router.push({name: 'Index'})
           })
           .catch(err => console.error(err))

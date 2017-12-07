@@ -28,19 +28,23 @@ class UserCtrl {
 			email: req.body.email
 		})
 			.then(userData => {
+				console.log(userData)
 				if (userData === null) {
-					res.status(403).send("invalid")
+					res.send("invalid")
 				} else {
-					if (userData.password != req.body.password) {
-						res.status(403).send("invalid")
-					} else {
-						var token = jwt.sign({ 
-							_id: userData._id,
-							isLogin: true 
-						}, "shhhhh")
-
-						res.status(200).send(token)
-					}
+					bcrypt.compare(req.body.password, userData.password)
+						.then(function(response) {
+							if (!response) {
+								res.send("invalid")
+							} else {
+								var token = jwt.sign({ 
+									_id: userData._id,
+									isLogin: true 
+								}, "shhhhh")
+								res.status(200).send(token)
+							}
+						})
+						.catch(err => res.status(500).send(err))
 				}
 			})
 			.catch(err => res.status(500).send(err))
@@ -48,12 +52,12 @@ class UserCtrl {
 
 	static loginFB (req, res) {
 		User.findOne({
-			memberid: req.body.userID
+			memberid: req.body.user_id
 		})
 			.then(userData => {
 				if (userData === null) {
 					FB.setAccessToken(req.headers.accesstoken)
-					FB.api(req.body.userID, { fields: ["id", "name", "email"] }, function (response) {
+					FB.api(req.body.user_id, { fields: ["id", "name", "email"] }, function (response) {
 						if(!response || response.error) {
 							console.log(!response ? "error occurred" : response.error)
 							res.status(500).send(response.error)
